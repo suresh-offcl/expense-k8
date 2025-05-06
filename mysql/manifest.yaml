@@ -25,3 +25,20 @@ spec:
       - name: mysql
         image: sureshkhanishk/mysql:v1
 
+--- 
+
+kind: Service 
+apiVersion: v1
+metadata:
+  name: expense 
+  namespace: expense 
+spec: 
+  selector:
+    app: mysql
+    tier: db
+    project: expense
+  ports:
+    - name: mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
