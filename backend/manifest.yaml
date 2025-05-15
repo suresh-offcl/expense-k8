@@ -23,7 +23,7 @@ spec:
       tier: api
       project: expense
   template:
-    metadata:
+    metadata: 
       labels:
         app: backend
         tier: api
@@ -67,7 +67,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
  name: backend 
-namespace: expense
+ namespace: expense
 spec:
  scaleTargetRef:
    apiVersion: apps/v1
@@ -76,3 +76,25 @@ spec:
  minReplicas: 1
  maxReplicas: 10
  targetCPUUtilizationPercentage: 15 #usually 75 in real environments
+
+# Explanation for the code:
+# 1. ConfigMap:
+#    - Stores configuration data (DB_HOST set to 'mysql') for the backend application.
+#    - This data can be used by the application without hardcoding it in the code.
+#
+# 2. Deployment:
+#    - Manages the backend application.
+#    - Ensures 2 replicas (copies) of the backend app are always running.
+#    - Uses the image 'sureshkhanishk/backend:v1' to run the app.
+#    - Requests and limits resources (128Mi memory and 100m CPU) for each replica.
+#    - Fetches environment variables from the ConfigMap named 'backend'.
+#
+# 3. Service:
+#    - Exposes the backend application to other services or users.
+#    - Maps the app to port 8080 using TCP protocol.
+#    - Ensures traffic is directed to the backend pods with matching labels.
+#
+# 4. HorizontalPodAutoscaler:
+#    - Automatically adjusts the number of backend replicas based on CPU usage.
+#    - Keeps at least 1 replica and can scale up to 10 replicas.
+#    - Triggers scaling when CPU usage exceeds 15% (low for testing, usually 75% in real environments).
