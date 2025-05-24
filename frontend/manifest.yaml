@@ -65,3 +65,5 @@ spec:
  minReplicas: 1
  maxReplicas: 10
  targetCPUUtilizationPercentage: 15 #usually 75 in real environments
+
+
